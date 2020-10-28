@@ -8,7 +8,7 @@ const knex = require("knex");
 const db = knex({
   client: "pg",
   connection: {
-    host: "35.197.22.189",
+    host: "127.0.0.1",
     user: "postgres",
     password: "",
     database: "alsterdorf",
@@ -60,6 +60,13 @@ app.listen(process.env.PORT || 3000, () => {
 
 function handleDatabaseInsert(benef, res) {
     const { name, date, cosemnat } = benef;
+
+    //generate temp
+    const min = 35.6;
+    const max = 36.9;
+    const rand = Math.random() * (max - min + 1)+ min
+    user.temp = rand.toFixed(1)
+
     db("beneficiari")
         .returning("*")
         .insert(benef)
