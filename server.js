@@ -24,7 +24,7 @@ const db = knex({
 app.use(express.json());
 app.use(cors());
 
-app.get('/test',(req,res) => {
+app.get('/',(req,res) => {
     res.status(200).json('Server is running, everything is a ok')
 })
 
