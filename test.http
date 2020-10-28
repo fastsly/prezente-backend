@@ -1,4 +1,4 @@
-GET http://shielded-reef-52397/ HTTP/1.1
+GET http://shielded-reef-52397.herokuapp.com/ HTTP/1.1
 content-type: application/json
 
 {
