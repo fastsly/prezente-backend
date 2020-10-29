@@ -73,6 +73,6 @@ function handleDatabaseInsert(benef, res) {
         .then((user) => {
             res.status(200).json(user);
         })
-        .catch((err) => res.status(400).json("Unable to register!"));
+        .catch((err) => res.status(400).json("Unable to register! "+err));
 }
 
