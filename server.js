@@ -43,9 +43,12 @@ app.get("/xlsx/:year/:month", (req, res) => {
 
   try{
   const prezenteArray = db("beneficiari")
-        .returning("*")
+        //.returning("*")
         .select('*')
         .from("beneficiari")
+        .then(data =>{
+          return data
+        })
         //.andWhereRaw(`EXTRACT(MONTH FROM dateColumn::date) = ?`, [date])
         if (prezenteArray){
           res.json(prezenteArray)
