@@ -32,13 +32,10 @@ app.get("/xlsx/:year/:month", (req, res) => {
 
   // req.params.year
   // req.params.month
-  try{
+  
   const date = Date.parse(req.params.month + req.params.year)
   console.log(date)
-  }catch (err){
-    console.log(err)
-    res.status(410).json(err)
-  }
+  
   //
 
   
