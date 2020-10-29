@@ -28,17 +28,35 @@ app.get('/',(req,res) => {
     res.status(200).json('Server is running, everything is a ok')
 })
 
-app.get("/xlsx", (req, res) => {
+app.get("/xlsx/:year/:month", (req, res) => {
+
+  req.params.year
+  req.params.month
+  const date = Date.parse(req.params.month + req.params.year)
+  console.log(date)
+  const prezenteArray = db("beneficiari")
+        .returning("*")
+        .select('*')
+        .from("beneficiari")
+        .andWhereRaw(`EXTRACT(MONTH FROM dateColumn::date) = ?`, [date])
+        
+  if (prezenteArray){
+    res.json(prezenteArray)
+  }
+
   /* generate workbook */
-  var ws = XLSX.utils.aoa_to_sheet(data);
-  var wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
+  // var ws = XLSX.utils.aoa_to_sheet(data);
+  // var wb = XLSX.utils.book_new();
+  // XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
 
   /* generate buffer */
-  var buf = XLSX.write(wb, { type: "buffer", bookType: bookType || "xlsx" });
+  // var buf = XLSX.write(wb, { type: "buffer", bookType: bookType || "xlsx" });
 
   /* send to client */
-  res.status(200).send(buf);
+  // res.status(200).send(buf);
+
+
+
   //buffer is probably better implementation
   //   fs.readFile("/", "utf8", function (err, data) {
   //     if (err) {
