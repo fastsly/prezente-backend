@@ -66,6 +66,7 @@ function handleDatabaseInsert(benef, res) {
     const max = 36.9;
     const rand = Math.random() * (max - min + 1)+ min
     benef.temp = rand.toFixed(1)
+    benef.date = date
 
     db("beneficiari")
         .returning("*")
