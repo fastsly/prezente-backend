@@ -59,13 +59,13 @@ app.listen(process.env.PORT || 3000, () => {
 });
 
 function handleDatabaseInsert(benef, res) {
-    const { name, date, cosemnat } = benef;
-
+    const { name, cosemnat } = benef;
+    date = new Date();
     //generate temp
     const min = 35.6;
     const max = 36.9;
     const rand = Math.random() * (max - min + 1)+ min
-    user.temp = rand.toFixed(1)
+    benef.temp = rand.toFixed(1)
 
     db("beneficiari")
         .returning("*")
