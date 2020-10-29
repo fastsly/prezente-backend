@@ -43,7 +43,7 @@ app.get("/xlsx/:year/:month", (req, res) => {
         //.returning("*")
         .select('*')
         .from("beneficiari")
-        .andWhereRaw(`EXTRACT(MONTH FROM dateColumn::date) = ?`, [date])
+        .andWhereRaw(`EXTRACT(MONTH FROM date::date) = ?`, [date])
         .then(data =>{
           if (data){
             res.json(data)
