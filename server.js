@@ -41,7 +41,7 @@ app.get("/xlsx/:year/:month", (req, res) => {
   }
   //
 
-  try{
+  
   db("beneficiari")
         //.returning("*")
         .select('*')
@@ -52,12 +52,12 @@ app.get("/xlsx/:year/:month", (req, res) => {
             res.json(data)
           }
         })
+        .catch(err =>{
+          res.status(411).json(err)
+        })
         
         
-  }catch (err){
-    console.log(err)
-    res.status(411).json(err)
-  }  
+  
   
 
   /* generate workbook */
