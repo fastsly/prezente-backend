@@ -13,7 +13,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server_test.js",
+    "start": "nodemon server.js",
     "xlsx": "node xlsx_test.js"
   },
   "keywords": [],
