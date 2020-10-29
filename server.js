@@ -30,15 +30,15 @@ app.get('/',(req,res) => {
 
 app.get("/xlsx/:year/:month", (req, res) => {
 
-  req.params.year
-  req.params.month
+  // req.params.year
+  // req.params.month
   const date = Date.parse(req.params.month + req.params.year)
   console.log(date)
   const prezenteArray = db("beneficiari")
         .returning("*")
         .select('*')
         .from("beneficiari")
-        .andWhereRaw(`EXTRACT(MONTH FROM dateColumn::date) = ?`, [date])
+        //.andWhereRaw(`EXTRACT(MONTH FROM dateColumn::date) = ?`, [date])
         
   if (prezenteArray){
     res.json(prezenteArray)
