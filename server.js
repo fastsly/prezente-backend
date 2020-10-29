@@ -47,13 +47,14 @@ app.get("/xlsx/:year/:month", (req, res) => {
         .select('*')
         .from("beneficiari")
         //.andWhereRaw(`EXTRACT(MONTH FROM dateColumn::date) = ?`, [date])
+        if (prezenteArray){
+          res.json(prezenteArray)
+        }
   }catch (err){
     console.log(err)
     res.status(411).json(err)
   }  
-  if (prezenteArray){
-    res.json(prezenteArray)
-  }
+  
 
   /* generate workbook */
   // var ws = XLSX.utils.aoa_to_sheet(data);
