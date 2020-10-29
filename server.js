@@ -28,35 +28,18 @@ app.get('/',(req,res) => {
     res.status(200).json('Server is running, everything is a ok')
 })
 
-app.get("/xlsx/:year/:month", (req, res) => {
-
-  // req.params.year
-  // req.params.month
-  
-  
-  //console.log(date)
-  
-  //
-
-  
+app.get("/xlsx/:year/:month", (req, res) => {  
   db("beneficiari")
-        //.returning("*")
         .select('*')
         .from("beneficiari")
         .andWhereRaw(`EXTRACT(YEAR FROM date::date) = ?`, [req.params.year])
         .andWhereRaw(`EXTRACT(MONTH FROM date::date) = ?`, [req.params.month])
         .then(data =>{
-          if (data){
             res.json(data)
-          }
         })
         .catch(err =>{
           res.status(411).json(err)
         })
-        
-        
-  
-  
 
   /* generate workbook */
   // var ws = XLSX.utils.aoa_to_sheet(data);
