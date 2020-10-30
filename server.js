@@ -48,7 +48,7 @@ app.get("/xlsx/:year/:month", (req, res) => {
               // obj.temp,
               // obj.cosemnat
             ]);
-            console.log('lista benef is '+listBenef +`list benef of ${key} is `+listBenef[key]);
+            console.log('lista benef is '+JSON.stringify(listBenef) +`list benef of ${key} is `+JSON.stringify(listBenef[key]));
           }
         });
       });
@@ -60,6 +60,7 @@ app.get("/xlsx/:year/:month", (req, res) => {
           XLSX.utils.aoa_to_sheet(listBenef[key].array),
           listBenef[key].name
         );
+        console.log('worksheet is ')
         console.log(XLSX.utils.sheet_to_json(wb.Sheets['Buroi Alexandra']));
       });
 
