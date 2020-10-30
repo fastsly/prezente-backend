@@ -44,9 +44,9 @@ app.get("/xlsx/:year/:month", (req, res) => {
         Object.keys(listBenef).map((key, index) => {
           if (obj.name === listBenef[key].name) {
             listBenef[key].array.push([
-              obj.date.slice(0, 10),
-              obj.temp,
-              obj.cosemnat,
+              // obj.date.slice(0, 10),
+              // obj.temp,
+              // obj.cosemnat,
             ]);
             console.log(listBenef[key]);
           }
