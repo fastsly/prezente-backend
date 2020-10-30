@@ -40,9 +40,10 @@ app.get("/xlsx/:year/:month", (req, res) => {
       
 
       data.forEach((obj) => {
-        console.log(obj);
+        
         Object.keys(listBenef).map((key, index) => {
           if (obj.name === listBenef[key].name) {
+            console.log(listBenef[key]);
             listBenef[key].array.push([
               obj.date.slice(0, 10),
               obj.temp,
