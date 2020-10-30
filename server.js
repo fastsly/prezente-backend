@@ -46,9 +46,9 @@ app.get("/xlsx/:year/:month", (req, res) => {
             listBenef[key].array.push([
               // obj.date.slice(0, 10),
               // obj.temp,
-              // obj.cosemnat,
+              // obj.cosemnat
             ]);
-            console.log(listBenef[key]);
+            console.log('lista benef is '+listBenef +`list benef of ${key} is `+listBenef[key]);
           }
         });
       });
