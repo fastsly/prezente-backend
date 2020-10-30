@@ -40,19 +40,19 @@ app.get("/xlsx/:year/:month", (req, res) => {
       
 
       data.forEach((obj) => {
-        
+
         Object.keys(listBenef).map((key, index) => {
-          console.log('obj is '+JSON.stringify(obj))
-          if (obj.name === listBenef[key].name) {
+          if (obj["name"] === listBenef[key].name) {
+            tempDate = obj["date"].getDate()+"."+(obj["date"].getMonth()+1)+"."+obj["date"].getFullYear()
             listBenef[key].array.push([
-              obj.date.slice(0, 10),
-              obj.temp,
-              obj.cosemnat
+              tempDate,
+              obj["temp"],
+              obj["cosemnat"]
             ]);
-            console.log('lista benef is '+JSON.stringify(listBenef) +`list benef of ${key} is `+JSON.stringify(listBenef[key]));
           }
         });
       });
+
 
       var wb = XLSX.utils.book_new();
       Object.keys(listBenef).map((key, index) => {

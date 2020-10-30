@@ -10,11 +10,11 @@ const listBenef = require("./listBenef.json");
 const db = knex({
   client: "pg",
   connection: {
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
+    host : '127.0.0.1',
+    user : 'postgres',
+    password : 'test',
+    database : 'postgres'
+  }
 });
 // CREATE TABLE beneficiari (
 //     name        varchar(100)  PRIMARY KEY,
@@ -31,63 +31,57 @@ app.get("/", (req, res) => {
 });
 
 app.get("/xlsx/:year/:month", (req, res) => {
-  const data = [
-    {
-      name: "Putnoki Lorand",
-      date: "2020-10-29T09:25:42.417Z",
-      temp: 36.5,
-      cosemnat: "Szalai Laszlo",
-    },
-    {
-      name: "Putnoki Lorand",
-      date: "2020-11-29T09:25:42.417Z",
-      temp: 36.5,
-      cosemnat: "Szalai Laszlo",
-    },
-    {
-      name: "Buroi Alexandra",
-      date: "2020-11-29T09:25:42.417Z",
-      temp: 36.5,
-      cosemnat: "Szalai Laszlo",
-    },
-  ];
+  db("beneficiari")
+  .select("*")
+  .from("beneficiari")
+  .andWhereRaw(`EXTRACT(YEAR FROM date::date) = ?`, [req.params.year])
+  .andWhereRaw(`EXTRACT(MONTH FROM date::date) = ?`, [req.params.month])
+  .then((data) => {
 
-  // res.json(data);
-  data.forEach((obj) => {
-    Object.keys(listBenef).map((key, index) => {
-      if (obj.name === listBenef[key].name) {
-        listBenef[key].array.push([
-          obj.date.slice(0, 10),
-          obj.temp,
-          obj.cosemnat,
-        ]);
-      }
+    console.log({name:'name',temp:36.5})
+    
+    data.forEach((obj) => {
+
+      Object.keys(listBenef).map((key, index) => {
+        
+
+        //obj = express.json(obj)
+        //obj = JSON.parse(`${obj}`)
+        // temp =JSON.stringify(obj)
+        // temp2 = JSON.parse(temp)
+         
+        
+        if (obj["name"] === listBenef[key].name) {
+          tempdate = obj["date"].getDate()+"."+(obj["date"].getMonth()+1)+"."+obj["date"].getFullYear()
+          listBenef[key].array.push([
+            tempdate,
+            obj["temp"],
+            obj["cosemnat"]
+          ]);
+          //console.log('lista benef is '+JSON.stringify(listBenef) +`list benef of ${key} is `+JSON.stringify(listBenef[key]));
+        }
+      });
     });
+
+    var wb = XLSX.utils.book_new();
+    Object.keys(listBenef).map((key, index) => {
+      XLSX.utils.book_append_sheet(
+        wb,
+        XLSX.utils.aoa_to_sheet(listBenef[key].array),
+        listBenef[key].name
+      );
+      //console.log('worksheet is ')
+      //console.log(XLSX.utils.sheet_to_json(wb.Sheets['Buroi Alexandra']));
+    });
+
+    /* generate buffer */
+    //const filename = `prezente${monthNumToName(req.params.month) + req.params.year}.xlsx`
+    var buf = XLSX.write(wb, { type: "buffer", bookType: "xlsx" });
+    res.status(200).send(buf);
+  })
+  .catch((err) => {
+    res.status(411).json(err);
   });
-
-  var wb = XLSX.utils.book_new();
-  Object.keys(listBenef).map((key, index) => {
-    XLSX.utils.book_append_sheet(
-      wb,
-      XLSX.utils.aoa_to_sheet(listBenef[key].array),
-      listBenef[key].name
-    );
-  });
-
-  /* generate buffer */
-  
-  const filename = `prezente${
-    monthNumToName(req.params.month) + req.params.year
-  }.xlsx`;
-  var buf = XLSX.write(wb, { type: "buffer", bookType: "xlsx" });
-  //XLSX.writeFile(wb, filename);
-
-//   fs.readFileSync("/", "utf8", function (err, data) {
-//     if (err) {
-//       return console.log(err);
-//     }
-//   });
-  res.status(200).send(buf);
 });
 /* send to client */
 // res.status(200).send(buf);

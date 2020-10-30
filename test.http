@@ -33,3 +33,12 @@ content-type: application/json
 }
 
 ###
+POST http://localhost:3000/daily HTTP/1.1
+content-type: application/json
+
+{
+
+"name": "Buroi Alexandra",
+"cosemnat": "Szalai Laszlo"
+
+}
