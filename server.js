@@ -43,12 +43,12 @@ app.get("/xlsx/:year/:month", (req, res) => {
         
         Object.keys(listBenef).map((key, index) => {
           if (obj.name === listBenef[key].name) {
-            console.log(listBenef[key]);
             listBenef[key].array.push([
               obj.date.slice(0, 10),
               obj.temp,
               obj.cosemnat,
             ]);
+            console.log(listBenef[key]);
           }
         });
       });
@@ -60,6 +60,7 @@ app.get("/xlsx/:year/:month", (req, res) => {
           XLSX.utils.aoa_to_sheet(listBenef[key].array),
           listBenef[key].name
         );
+        console.log(XLSX.utils.sheet_to_json(wb.Sheets['Buroi Alexandra']));
       });
 
       /* generate buffer */
