@@ -4,7 +4,7 @@ const app = express();
 const XLSX = require("xlsx");
 const knex = require("knex");
 const fs = require("fs");
-const listBenef = require("./listBenef.json");
+let listBenef = require("./listBenef.json");
 
 //db is a table with name, date, temp(auto-generated), cosemnat
 const db = knex({
@@ -37,8 +37,8 @@ app.get("/xlsx/:year/:month", (req, res) => {
     .andWhereRaw(`EXTRACT(YEAR FROM date::date) = ?`, [req.params.year])
     .andWhereRaw(`EXTRACT(MONTH FROM date::date) = ?`, [req.params.month])
     .then((data) => {
-      console.log(data)
-      /*
+      console.log(data);
+
       data.forEach((obj) => {
         Object.keys(listBenef).map((key, index) => {
           if (obj.name === listBenef[key].name) {
@@ -59,11 +59,11 @@ app.get("/xlsx/:year/:month", (req, res) => {
           listBenef[key].name
         );
       });
-*/
+
       /* generate buffer */
       //const filename = `prezente${monthNumToName(req.params.month) + req.params.year}.xlsx`
-  /*    var buf = XLSX.write(wb, { type: "buffer", bookType: "xlsx" });
-      res.status(200).send(buf);*/
+      var buf = XLSX.write(wb, { type: "buffer", bookType: "xlsx" });
+      res.status(200).send(buf);
     })
     .catch((err) => {
       res.status(411).json(err);
