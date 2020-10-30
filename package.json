@@ -14,7 +14,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "xlsx": "node xlsx_test.js"
+    "xlsx": "node xlsx_test.js",
+    "local": "nodemon server_test.js"
   },
   "keywords": [],
   "author": "",
