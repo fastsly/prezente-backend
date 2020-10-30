@@ -42,11 +42,12 @@ app.get("/xlsx/:year/:month", (req, res) => {
       data.forEach((obj) => {
         
         Object.keys(listBenef).map((key, index) => {
+          console.log('obj is '+JSON.stringify(obj))
           if (obj.name === listBenef[key].name) {
             listBenef[key].array.push([
-              // obj.date.slice(0, 10),
-              // obj.temp,
-              // obj.cosemnat
+              obj.date.slice(0, 10),
+              obj.temp,
+              obj.cosemnat
             ]);
             console.log('lista benef is '+JSON.stringify(listBenef) +`list benef of ${key} is `+JSON.stringify(listBenef[key]));
           }
