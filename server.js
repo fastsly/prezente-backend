@@ -37,9 +37,10 @@ app.get("/xlsx/:year/:month", (req, res) => {
     .andWhereRaw(`EXTRACT(YEAR FROM date::date) = ?`, [req.params.year])
     .andWhereRaw(`EXTRACT(MONTH FROM date::date) = ?`, [req.params.month])
     .then((data) => {
-      console.log(data);
+      
 
       data.forEach((obj) => {
+        console.log(obj);
         Object.keys(listBenef).map((key, index) => {
           if (obj.name === listBenef[key].name) {
             listBenef[key].array.push([
@@ -84,7 +85,7 @@ function handleDatabaseInsert(benef, res) {
   date = new Date();
   //generate temp
   const min = 35.6;
-  const max = 36.9;
+  const max = 36.0;
   const rand = Math.random() * (max - min + 1) + min;
   benef.temp = rand.toFixed(1);
   benef.date = date;
