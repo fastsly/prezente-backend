@@ -37,7 +37,7 @@ app.get("/xlsx/:year/:month", (req, res) => {
     .andWhereRaw(`EXTRACT(YEAR FROM date::date) = ?`, [req.params.year])
     .andWhereRaw(`EXTRACT(MONTH FROM date::date) = ?`, [req.params.month])
     .then((data) => {
-      
+      let tempList = undefined
       tempList = listBenef
 
       data.forEach((obj) => {
