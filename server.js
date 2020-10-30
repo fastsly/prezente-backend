@@ -38,13 +38,13 @@ app.get("/xlsx/:year/:month", (req, res) => {
     .andWhereRaw(`EXTRACT(MONTH FROM date::date) = ?`, [req.params.month])
     .then((data) => {
       
+      tempList = listBenef
 
       data.forEach((obj) => {
-
-        Object.keys(listBenef).map((key, index) => {
-          if (obj["name"] === listBenef[key].name) {
+        Object.keys(tempList).map((key, index) => {
+          if (obj["name"] === tempList[key].name) {
             tempDate = obj["date"].getDate()+"."+(obj["date"].getMonth()+1)+"."+obj["date"].getFullYear()
-            listBenef[key].array.push([
+            tempList[key].array.push([
               tempDate,
               obj["temp"],
               obj["cosemnat"]
@@ -55,14 +55,14 @@ app.get("/xlsx/:year/:month", (req, res) => {
 
 
       var wb = XLSX.utils.book_new();
-      Object.keys(listBenef).map((key, index) => {
+      Object.keys(tempList).map((key, index) => {
         XLSX.utils.book_append_sheet(
           wb,
-          XLSX.utils.aoa_to_sheet(listBenef[key].array),
-          listBenef[key].name
+          XLSX.utils.aoa_to_sheet(tempList[key].array),
+          tempList[key].name
         );
         console.log('worksheet is ')
-        console.log(listBenef[key].array);
+        console.log(tempList[key].array);
       });
 
       /* generate buffer */
