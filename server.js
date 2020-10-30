@@ -62,7 +62,7 @@ app.get("/xlsx/:year/:month", (req, res) => {
           listBenef[key].name
         );
         console.log('worksheet is ')
-        console.log(XLSX.utils.sheet_to_json(wb.Sheets['Buroi Alexandra']));
+        console.log(listBenef[key].array);
       });
 
       /* generate buffer */
