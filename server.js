@@ -37,8 +37,7 @@ app.get("/xlsx/:year/:month", (req, res) => {
     .andWhereRaw(`EXTRACT(YEAR FROM date::date) = ?`, [req.params.year])
     .andWhereRaw(`EXTRACT(MONTH FROM date::date) = ?`, [req.params.month])
     .then((data) => {
-      let tempList = undefined
-      tempList = listBenef
+      let tempList = JSON.parse(JSON.stringify(listBenef)) 
 
       data.forEach((obj) => {
         Object.keys(tempList).map((key, index) => {
@@ -61,8 +60,6 @@ app.get("/xlsx/:year/:month", (req, res) => {
           XLSX.utils.aoa_to_sheet(tempList[key].array),
           tempList[key].name
         );
-        console.log('worksheet is ')
-        console.log(tempList[key].array);
       });
 
       /* generate buffer */
@@ -85,8 +82,10 @@ app.listen(process.env.PORT || 3000, () => {
 });
 
 function handleDatabaseInsert(benef, res) {
-  const { name, cosemnat } = benef;
-  date = new Date();
+  const { name, date, cosemnat } = benef;
+  if(!date){
+    date = new Date();
+  }
   //generate temp
   const min = 35.6;
   const max = 36.0;

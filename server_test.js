@@ -37,28 +37,18 @@ app.get("/xlsx/:year/:month", (req, res) => {
   .andWhereRaw(`EXTRACT(YEAR FROM date::date) = ?`, [req.params.year])
   .andWhereRaw(`EXTRACT(MONTH FROM date::date) = ?`, [req.params.month])
   .then((data) => {
-
+    let tempList = JSON.parse(JSON.stringify(listBenef))
     console.log({name:'name',temp:36.5})
     
     data.forEach((obj) => {
-
-      Object.keys(listBenef).map((key, index) => {
-        
-
-        //obj = express.json(obj)
-        //obj = JSON.parse(`${obj}`)
-        // temp =JSON.stringify(obj)
-        // temp2 = JSON.parse(temp)
-         
-        
-        if (obj["name"] === listBenef[key].name) {
-          tempdate = obj["date"].getDate()+"."+(obj["date"].getMonth()+1)+"."+obj["date"].getFullYear()
-          listBenef[key].array.push([
-            tempdate,
+      Object.keys(tempList).map((key, index) => {
+        if (obj["name"] === tempList[key].name) {
+          tempDate = obj["date"].getDate()+"."+(obj["date"].getMonth()+1)+"."+obj["date"].getFullYear()
+          tempList[key].array.push([
+            tempDate,
             obj["temp"],
             obj["cosemnat"]
           ]);
-          //console.log('lista benef is '+JSON.stringify(listBenef) +`list benef of ${key} is `+JSON.stringify(listBenef[key]));
         }
       });
     });
