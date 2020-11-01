@@ -116,7 +116,7 @@ function handleDatabaseInsert(benef, res, isArray) {
     }else{
       tempDate = false
     }
-    console.log(tempDate+' and date '+date)
+    console.log(tempDate+' and date not array '+date)
     //generate temp
     const min = 35.6;
     const max = 36.0;
