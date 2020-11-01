@@ -74,7 +74,12 @@ app.get("/xlsx/:year/:month", (req, res) => {
 
 app.post("/daily", (req, res) => {
   //req must be object with these keys name, date, cosemnat
-  handleDatabaseInsert(req.body, res);
+  console.log(req.body.length)
+  if (req.body.length > 0) {
+    handleDatabaseInsert(req.body, res, (isArray = true));
+  } else {
+    handleDatabaseInsert(req.body, res, (isArray = false));
+  }
 
 });
 
