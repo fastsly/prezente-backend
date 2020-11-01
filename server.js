@@ -75,31 +75,61 @@ app.get("/xlsx/:year/:month", (req, res) => {
 app.post("/daily", (req, res) => {
   //req must be object with these keys name, date, cosemnat
   handleDatabaseInsert(req.body, res);
+
 });
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server is running!");
 });
 
-function handleDatabaseInsert(benef, res) {
-  const { name, date, cosemnat } = benef;
-  if(!date){
-    date = new Date();
-  }
-  //generate temp
-  const min = 35.6;
-  const max = 36.0;
-  const rand = Math.random() * (max - min + 1) + min;
-  benef.temp = rand.toFixed(1);
-  benef.date = date;
+function handleDatabaseInsert(benef, res, isArray) {
+  let tempDate
+  if (isArray) {
+    let userArray = []
+    benef.forEach((user) => {
+      const { name, date, cosemnat } = user;
+      if (!date) {
+        tempDate = new Date();
+      } else{
+        tempDate = false
+      }
+      //generate temp
+      const min = 35.6;
+      const max = 36.0;
+      const rand = Math.random() * (max - min + 1) + min;
+      user.temp = rand.toFixed(1);
+      user.date = date || tempDate;
+      userArray.push(user)
+    });
+    db("beneficiari")
+        .returning("*")
+        .insert(userArray)
+        .then((user) => {
+          res.status(200).json(user);
+        })
+        .catch((err) => res.status(400).json("Unable to register! " + err));
+  } else {
+    const { name, date, cosemnat } = benef;
+    if (!date) {
+      tempDate = new Date();
+    }else{
+      tempDate = false
+    }
+    //generate temp
+    const min = 35.6;
+    const max = 36.0;
+    const rand = Math.random() * (max - min + 1) + min;
+    benef.temp = rand.toFixed(1);
+    benef.date = date || tempDate;
 
-  db("beneficiari")
-    .returning("*")
-    .insert(benef)
-    .then((user) => {
-      res.status(200).json(user);
-    })
-    .catch((err) => res.status(400).json("Unable to register! " + err));
+    db("beneficiari")
+      .returning("*")
+      .insert(benef)
+      .then((user) => {
+        res.status(200).json(user);
+      })
+      .catch((err) => res.status(400).json("Unable to register! " + err));
+  }
 }
 
 // function monthNumToName(monthnum) {
