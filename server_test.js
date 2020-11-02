@@ -12,8 +12,8 @@ const db = knex({
   connection: {
     host: "127.0.0.1",
     user: "postgres",
-    password: "test",
-    database: "postgres",
+    password: "bungeelaci",
+    database: "alster",
   },
 });
 // CREATE TABLE beneficiari (
@@ -106,6 +106,7 @@ function handleDatabaseInsert(benef, res, isArray) {
       } else{
         tempDate = false
       }
+      console.log(tempDate+' and date '+date)
       //generate temp
       const min = 35.6;
       const max = 36.0;
