@@ -38,7 +38,9 @@ app.get("/xlsx/:year/:month", (req, res) => {
     .andWhereRaw(`EXTRACT(MONTH FROM date::date) = ?`, [req.params.month])
     .then((data) => {
       let tempList = JSON.parse(JSON.stringify(listBenef)) 
-
+      console.log('first')
+      console.log(data)
+      console.log(templist)
       data.forEach((obj) => {
         Object.keys(tempList).map((key, index) => {
           if (obj["name"] === tempList[key].name) {
@@ -51,7 +53,9 @@ app.get("/xlsx/:year/:month", (req, res) => {
           }
         });
       });
-
+      console.log('second')
+      console.log(data)
+      console.log(templist)
 
       var wb = XLSX.utils.book_new();
       Object.keys(tempList).map((key, index) => {
