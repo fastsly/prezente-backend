@@ -40,6 +40,7 @@ app.get("/xlsx/:year/:month", (req, res) => {
       let tempList = JSON.parse(JSON.stringify(listBenef)) 
       console.log('first')
       console.log(data)
+      console.log('si listbenef is'+listBenef)
       console.log ("si templist is")
       console.log(templist)
 
