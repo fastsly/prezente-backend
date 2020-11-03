@@ -40,8 +40,11 @@ app.get("/xlsx/:year/:month", (req, res) => {
       let tempList = JSON.parse(JSON.stringify(listBenef)) 
       console.log('first')
       console.log(data)
+      console.log ("si templist is")
       console.log(templist)
+
       data.forEach((obj) => {
+        console.log("the obj is"+obj)
         Object.keys(tempList).map((key, index) => {
           if (obj["name"] === tempList[key].name) {
             tempDate = obj["date"].getDate()+"."+(obj["date"].getMonth()+1)+"."+obj["date"].getFullYear()
@@ -53,6 +56,7 @@ app.get("/xlsx/:year/:month", (req, res) => {
           }
         });
       });
+
       console.log('second')
       console.log(data)
       console.log(templist)
