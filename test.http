@@ -24,7 +24,7 @@ content-type: application/json
 ]
 
 ###
-GET http://frozen-basin-35628.herokuapp.com/xlsx/2020/10 HTTP/1.1
+GET http://frozen-basin-35628.herokuapp.com/xlsx/2020/11 HTTP/1.1
 content-type: application/json
 
 {
@@ -32,7 +32,7 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:3000/xlsx/2020/10 HTTP/1.1
+GET http://localhost:3001/xlsx/2020/11 HTTP/1.1
 content-type: application/json
 
 {
@@ -43,16 +43,61 @@ content-type: application/json
 POST http://localhost:3001/daily HTTP/1.1
 content-type: application/json
 
-[{
-
-"name": "Buroi Alexandra",
+[
+{
+"name": "Szalai Laszlo",
 "cosemnat": "Szalai Laszlo"
-
+ },
+{
+"name": "Berki Melinda",
+"cosemnat": "Szalai Laszlo"
 },
 {
-
+"name": "Buroi Alexandra",
+"cosemnat": "Szalai Laszlo"
+},
+{
+"name": "Covaci Emilia",
+"cosemnat": "Szalai Laszlo"
+},
+{
+"name": "Cordovan Loredana",
+"cosemnat": "Szalai Laszlo"
+},
+{
+"name": "Kanalas Monika",
+"cosemnat": "Szalai Laszlo"
+},
+ {
 "name": "Putnoki Lorand",
 "cosemnat": "Szalai Laszlo"
-
-}
+},
+{
+"name": "Simon Angela",
+"cosemnat": "Szalai Laszlo"
+},
+{
+"name": "Cotrau Iuliana",
+"cosemnat": "Szalai Laszlo"
+},
+{
+"name": "Magori Gabriela",
+"cosemnat": "Gergely Livia"
+},
+ {
+"name": "Lazar Bogdan",
+"cosemnat": "Gergely Livia"
+},
+{
+"name": "Iovan Florian",
+"cosemnat": "Gergely Livia"
+},
+{
+"name": "Abrudan Ioana",
+"cosemnat": "Gergely Livia"
+},
+{
+"name": "Covaci Csaba",
+"cosemnat": "Gergely Livia"
+ }
 ]
