@@ -37,10 +37,13 @@ app.get("/xlsx/:year/:month", (req, res) => {
     .andWhereRaw(`EXTRACT(YEAR FROM date::date) = ?`, [req.params.year])
     .andWhereRaw(`EXTRACT(MONTH FROM date::date) = ?`, [req.params.month])
     .then((data) => {
-      let tempList = JSON.parse(JSON.stringify(listBenef));
+      //let tempList = JSON.parse(JSON.stringify(listBenef));
       //console.log({ name: "name", temp: 36.5 });
       // console.log("templist first is ")
-      
+      const tempList = {};
+        Object.keys(listBenef).sort().forEach(function(key) {
+        tempList[key] = listBenef[key];
+      });
 
       data.forEach((obj) => {
         // console.log("the obj is")
