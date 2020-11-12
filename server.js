@@ -3,8 +3,13 @@ const cors = require("cors");
 const app = express();
 const XLSX = require("xlsx");
 const knex = require("knex");
+const bcrypt = require('bcrypt')
 const fs = require("fs");
+const signIn = require('./controllers/signin')
 let listBenef = require("./listBenef.json");
+const { sign } = require("crypto");
+const xlsxController = require('./controllers/xlsx')
+const daily = require('./controllers/daily')
 
 //db is a table with name, date, temp(auto-generated), cosemnat
 const db = knex({
@@ -30,130 +35,28 @@ app.get("/", (req, res) => {
   res.status(200).json("Server is running, everything is a ok");
 });
 
-app.get("/xlsx/:year/:month", (req, res) => {
-  db("beneficiari")
-    .select("*")
-    .from("beneficiari")
-    .andWhereRaw(`EXTRACT(YEAR FROM date::date) = ?`, [req.params.year])
-    .andWhereRaw(`EXTRACT(MONTH FROM date::date) = ?`, [req.params.month])
-    .then((data) => {
-      //let tempList = JSON.parse(JSON.stringify(listBenef));
-      //console.log({ name: "name", temp: 36.5 });
-      // console.log("templist first is ")
-      let tempList = {};
-        Object.keys(listBenef).sort().forEach(function(key) {
-        tempList[key] = listBenef[key];
-      });
-
-      data.forEach((obj) => {
-        // console.log("the obj is")
-        // console.log(obj)
-        Object.keys(tempList).map((key, index) => {
-          if (obj["name"] === tempList[key].name) {
-            tempDate = obj["date"].getDate()+"."+(obj["date"].getMonth()+1)+"."+obj["date"].getFullYear()
-            tempList[key].array.push([
-              tempDate,
-              obj["temp"],
-              obj["cosemnat"]
-            ]);
-          }
-        });
-      });
-      // console.log("templist is")
-      // console.log(tempList)
-      console.table(tempList)
-      var wb = XLSX.utils.book_new();
-      Object.keys(tempList).map((key, index) => {
-      console.log("array is for "+tempList[key].name)
-      console.log(tempList[key].array)
-        XLSX.utils.book_append_sheet(
-          wb,
-          XLSX.utils.aoa_to_sheet(tempList[key].array),
-          tempList[key].name
-        );
-        console.log('worksheet is ')
-        console.log(XLSX.utils.sheet_to_json(wb.Sheets[tempList[key].name]));
-      });
-
-      /* generate buffer */
-      //const filename = `prezente${monthNumToName(req.params.month) + req.params.year}.xlsx`
-      console.log('we starting to write xlsx')
-      var buf = XLSX.write(wb, { type: "buffer", bookType: "xlsx" });
-      console.log("buffer is")
-      console.log(buf)
-      res.status(200).send(buf);
-    })
-    .catch((err) => {
-      res.status(411).json(err);
-    });
+app.get("/xlsx/:year/:month", (req, res) => { xlsxController.handleXlsx(req,res,db,XLSX, listBenef)
+  
 });
 
 app.post("/daily", (req, res) => {
   //req must be object with these keys name, date, cosemnat
   console.log(req.body.length)
   if (req.body.length > 0) {
-    handleDatabaseInsert(req.body, res, (isArray = true));
+    daily.handleDatabaseInsert(req.body, res, (isArray = true),db);
   } else {
-    handleDatabaseInsert(req.body, res, (isArray = false));
+    daily.handleDatabaseInsert(req.body, res, (isArray = false),db);
   }
 
 });
+
+app.post('/signin',(req,res) => {sign.handleSignIn(req,res,db,bcrypt)})
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server is running!");
 });
 
-function handleDatabaseInsert(benef, res, isArray) {
-  let tempDate
-  if (isArray) {
-    let userArray = []
-    benef.forEach((user) => {
-      const { name, date, cosemnat } = user;
-      if (!date) {
-        tempDate = new Date();
-      } else{
-        tempDate = false
-      }
-      console.log(tempDate+' and date '+date)
-      //generate temp
-      const min = 35.6;
-      const max = 36.0;
-      const rand = Math.random() * (max - min + 1) + min;
-      user.temp = rand.toFixed(1);
-      user.date = date || tempDate;
-      userArray.push(user)
-    });
-    db("beneficiari")
-        .returning("*")
-        .insert(userArray)
-        .then((user) => {
-          res.status(200).json(user);
-        })
-        .catch((err) => res.status(400).json("Unable to register! " + err));
-  } else {
-    const { name, date, cosemnat } = benef;
-    if (!date) {
-      tempDate = new Date();
-    }else{
-      tempDate = false
-    }
-    console.log(tempDate+' and date not array '+date)
-    //generate temp
-    const min = 35.6;
-    const max = 36.0;
-    const rand = Math.random() * (max - min + 1) + min;
-    benef.temp = rand.toFixed(1);
-    benef.date = date || tempDate;
 
-    db("beneficiari")
-      .returning("*")
-      .insert(benef)
-      .then((user) => {
-        res.status(200).json(user);
-      })
-      .catch((err) => res.status(400).json("Unable to register! " + err));
-  }
-}
 
 // function monthNumToName(monthnum) {
 //   var months = [

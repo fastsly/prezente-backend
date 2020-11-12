@@ -101,3 +101,12 @@ content-type: application/json
 "cosemnat": "Gergely Livia"
  }
 ]
+
+###
+POST http://localhost:3001/signin HTTP/1.1
+content-type: application/json
+
+{
+"name":"Livia",
+"password":"compaq18"
+}
