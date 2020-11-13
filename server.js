@@ -10,6 +10,7 @@ let listBenef = require("./listBenef.json");
 const { sign } = require("crypto");
 const xlsxController = require('./controllers/xlsx')
 const daily = require('./controllers/daily')
+const status = require('./controllers/status')
 
 //db is a table with name, date, temp(auto-generated), cosemnat
 const db = knex({
@@ -51,6 +52,8 @@ app.post("/daily", (req, res) => {
 });
 
 app.post('/signin',(req,res) => {sign.handleSignIn(req,res,db,bcrypt)})
+
+app.post('/status',(req,res) => {status.handleStatus(req,res,db)})
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server is running!");

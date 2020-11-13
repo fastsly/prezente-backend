@@ -19,7 +19,7 @@ function handleDatabaseInsert(benef, res, isArray,db) {
         user.date = date || tempDate;
         userArray.push(user)
       });
-      db("beneficiari")
+      db("prezente")
           .returning("*")
           .insert(userArray)
           .then((user) => {
@@ -41,7 +41,7 @@ function handleDatabaseInsert(benef, res, isArray,db) {
       benef.temp = rand.toFixed(1);
       benef.date = date || tempDate;
   
-      db("beneficiari")
+      db("prezente")
         .returning("*")
         .insert(benef)
         .then((user) => {

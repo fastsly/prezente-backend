@@ -110,3 +110,11 @@ content-type: application/json
 "name":"Livia",
 "password":"compaq18"
 }
+
+###
+GET http://localhost:3001/status HTTP/1.1
+Content-Type:  application/json
+
+{
+    
+}

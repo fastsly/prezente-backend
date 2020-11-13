@@ -1,8 +1,8 @@
 const handleXlsx = (req,res,db, XLSX,listBenef) => {
   
-    db("beneficiari")
+    db("prezente")
     .select("*")
-    .from("beneficiari")
+    .from("prezente")
     .andWhereRaw(`EXTRACT(YEAR FROM date::date) = ?`, [req.params.year])
     .andWhereRaw(`EXTRACT(MONTH FROM date::date) = ?`, [req.params.month])
     .then((data) => {
