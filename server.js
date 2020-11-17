@@ -51,7 +51,7 @@ app.post("/daily", (req, res) => {
 
 });
 
-app.post('/signin',(req,res) => {sign.handleSignIn(req,res,db,bcrypt)})
+app.post('/signin',(req,res) => {signIn.handleSignIn(req,res,db,bcrypt)})
 
 app.post('/status',(req,res) => {status.handleStatus(req,res,db)})
 
