@@ -11,8 +11,8 @@ const { sign } = require("crypto");
 const xlsxController = require('./controllers/xlsx');
 const daily = require('./controllers/daily')
 const status = require('./controllers/status')
-
-console.log(bcrypt.hashSync('alster18',10));
+const env = require('./env')
+console.log(bcrypt.hashSync('iamyourcreator',10));
 
 //db is a table with name, date, temp(auto-generated), cosemnat
 const db = knex({
@@ -20,8 +20,8 @@ const db = knex({
   connection: {
     host: "127.0.0.1",
     user: "postgres",
-    password: "test",
-    database: "postgres",
+    password: env.password,
+    database: env.database,
   },
 });
 // CREATE TABLE beneficiari (
