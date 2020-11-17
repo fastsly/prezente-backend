@@ -12,7 +12,7 @@ const xlsxController = require('./controllers/xlsx');
 const daily = require('./controllers/daily')
 const status = require('./controllers/status')
 
-console.log(bcrypt.hashSync('iamyourcreator',10));
+console.log(bcrypt.hashSync('alster18',10));
 
 //db is a table with name, date, temp(auto-generated), cosemnat
 const db = knex({
