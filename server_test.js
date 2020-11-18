@@ -12,6 +12,7 @@ const xlsxController = require('./controllers/xlsx');
 const daily = require('./controllers/daily')
 const status = require('./controllers/status')
 const env = require('./env')
+const list = require('./controllers/list')
 
 
 //db is a table with name, date, temp(auto-generated), cosemnat
@@ -56,6 +57,10 @@ app.post("/daily", (req, res) => {
 app.post('/signin',(req,res) => {signIn.handleSignIn(req,res,db,bcrypt)})
 
 app.get('/status',(req,res) => {status.handleStatus(req,res,db, listBenef)})
+
+app.post('/list/add',(res,req) => {list.handleAdd(req, res, db)})
+
+app.get('/list/get', (res, req) => {list.handleGet(req, res, db)}) 
 
 app.listen(process.env.PORT || 3001, () => {
   console.log("Server is running!");

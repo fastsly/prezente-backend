@@ -1,4 +1,4 @@
-const handleXlsx = (req,res,db, XLSX,listBenef) => {
+const handleXlsx = (req,res,db, XLSX) => {
   
     db("prezente")
     .select("*")
@@ -10,41 +10,43 @@ const handleXlsx = (req,res,db, XLSX,listBenef) => {
       //console.log({ name: "name", temp: 36.5 });
       // console.log("templist first is ")
       let tempList = {};
-      Object.keys(listBenef)
-        .sort()
-        .forEach(function (key) {
-          tempList[key] = listBenef[key];
+      db('list')
+      .select('name')
+      .then((list) => {
+        list.sort()
+        list.forEach(function (benef) {
+          benef.array = [["Data","Temperatura","Pers. care consemneaza"]]
         });
 
       data.forEach((obj) => {
         // console.log("the obj is")
         // console.log(obj)
-        Object.keys(tempList).map((key, index) => {
-          if (obj["name"] === tempList[key].name) {
+        list.map((value, index) => {
+          if (obj["name"] === value.name) {
             tempDate =
               obj["date"].getDate() +
               "." +
               (obj["date"].getMonth() + 1) +
               "." +
               obj["date"].getFullYear();
-            tempList[key].array.push([tempDate, obj["temp"], obj["cosemnat"]]);
+            value.array.push([tempDate, obj["temp"], obj["cosemnat"]]);
           }
         });
       });
       // console.log("templist is")
       // console.log(tempList)
-      console.table(tempList);
+      console.table(list);
       var wb = XLSX.utils.book_new();
-      Object.keys(tempList).map((key, index) => {
-        console.log("array is for " + tempList[key].name);
-        console.log(tempList[key].array);
+      list.map((value, index) => {
+        console.log("array is for " + value.name);
+        console.log(value.array);
         XLSX.utils.book_append_sheet(
           wb,
-          XLSX.utils.aoa_to_sheet(tempList[key].array),
-          tempList[key].name
+          XLSX.utils.aoa_to_sheet(value.array),
+          value.name
         );
         console.log("worksheet is ");
-        console.log(XLSX.utils.sheet_to_json(wb.Sheets[tempList[key].name]));
+        console.log(XLSX.utils.sheet_to_json(wb.Sheets[value.name]));
       });
 
       /* generate buffer */
@@ -54,6 +56,8 @@ const handleXlsx = (req,res,db, XLSX,listBenef) => {
       console.log("buffer is");
       console.log(buf);
       res.status(200).send(buf);
+      })
+      
     })
     .catch((err) => {
       res.status(411).json(err);

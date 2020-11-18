@@ -18,6 +18,7 @@ function handleDatabaseInsert(benef, res, isArray,db) {
         user.temp = rand.toFixed(1);
         user.date = date || tempDate;
         userArray.push(user)
+        console.table(userArray)
       });
       db("prezente")
           .returning("*")
