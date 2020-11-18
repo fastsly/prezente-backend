@@ -14,7 +14,7 @@ const handleAdd = (res,req, db)  =>{
 
 const handleGet = (res, req, db) =>{
     db('list')
-    .select('*')
+    .select('name')
     .then((list) => {
         res.status(200).json(list)
     })
