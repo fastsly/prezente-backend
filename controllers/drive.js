@@ -10,14 +10,20 @@ const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
 const TOKEN_PATH = 'token.json';
 
 // Load client secrets from a local file.
-function handleGdrive(callback){
-  
+function handleGdrive(opt,callback){
+if(opt === 'list'){
 fs.readFile('credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Google Drive API.
   return authorize(JSON.parse(content), listFiles,callback)
 });
-
+}else {
+  fs.readFile('credentials.json', (err, content) => {
+    if (err) return console.log('Error loading client secret file:', err);
+    // Authorize a client with credentials, then call the Google Drive API.
+    return authorize(JSON.parse(content), download,callback)
+  });
+}
 
 }
 /**
@@ -77,6 +83,7 @@ function getAccessToken(oAuth2Client, callback) {
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
  function listFiles(auth,callback) {
+   console.log('asd');
   const drive = google.drive({version: 'v3', auth}); 
     drive.files.list({
       q: "'1ZuxGqjZV2ZsoWMbqOv_1JChX4VkFXrmC' in parents",
@@ -99,9 +106,72 @@ function getAccessToken(oAuth2Client, callback) {
     //   }
     // }
     )
+    //.on('end', ()=> console.log('fuck'))
 }
 
-
+const download = (auth,callback) =>
+{
+    const drive = google.drive({version: 'v3', auth}); 
+    const folderId = '1ZuxGqjZV2ZsoWMbqOv_1JChX4VkFXrmC'
+    var fileId = '0BwwA4oUTeiV1UVNwOHItT0xfa2M';
+    var dest = fs.createWriteStream('./temp.docx');
+    drive.files.list({
+      q: "'1ZuxGqjZV2ZsoWMbqOv_1JChX4VkFXrmC' in parents",
+      pageSize: 100,
+      fields: 'nextPageToken, files(id, name)',
+    },
+    (err,resp)=>{
+      const files = resp.data.files;
+      let fileIds = []
+      if (files.length) {
+        fileIds.push(resp.data.files.id)        
+      }
+        // drive.files.get({
+        //   fileId: fileIds[0],
+        //   alt: 'media'
+        //   })
+        //       .on('end', function () {
+        //       console.log('Done');
+        //       })
+        //       .on('error', function (err) {
+        //       console.log('Error during download', err);
+        //       })
+        //       .pipe(dest)
+              
+        return drive.files
+        .get({fileId, alt: 'media'}, {responseType: 'stream'})
+        .then(res => {
+          return new Promise((resolve, reject) => {
+            const filePath = path.join(os.tmpdir(), uuid.v4());
+            console.log(`writing to ${filePath}`);
+            const dest = fs.createWriteStream(filePath);
+            let progress = 0;
+    
+            res.data
+              .on('end', () => {
+                console.log('Done downloading file.');
+                resolve(filePath);
+              })
+              .on('error', err => {
+                console.error('Error downloading file.');
+                reject(err);
+              })
+              .on('data', d => {
+                progress += d.length;
+                if (process.stdout.isTTY) {
+                  process.stdout.clearLine();
+                  process.stdout.cursorTo(0);
+                  process.stdout.write(`Downloaded ${progress} bytes`);
+                }
+              })
+              .pipe(dest);
+          });
+        });
+              
+    })
+    
+    //return dest
+}
 
 module.exports = {
   handleGdrive
