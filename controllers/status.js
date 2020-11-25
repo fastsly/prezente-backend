@@ -1,7 +1,7 @@
-const getNames = require("./drive");
+const download = require("./download.js");
 
 const handleStatus = (req, res, db) => {
-  getNames.handleGdrive((stream) => {
+  //getNames.handleGdrive((stream) => {
     // if (err) return console.log("The API returned an error: " + err);
     // const files = resp.data.files;
     // let fileNames
@@ -15,7 +15,10 @@ const handleStatus = (req, res, db) => {
     // } else {
     //   console.log("No files found.");
     // }
-    console.log(stream);
+    //console.log(stream);
+
+    download.downloadFile('0BwwA4oUTeiV1UVNwOHItT0xfa2M')
+    .catch(console.log)
 
     db.select("*")
       .from("status")
@@ -66,7 +69,7 @@ const handleStatus = (req, res, db) => {
           })
           .catch(console.log);
       });
-  });
+  //});
 };
 
 const reducer = (tempList, statusType) => {
@@ -74,6 +77,7 @@ const reducer = (tempList, statusType) => {
     acc[statusType] < cv[statusType] ? cv[statusType] : acc[statusType]
   );
 };
+
 module.exports = {
   handleStatus: handleStatus,
 };
