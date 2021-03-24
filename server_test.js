@@ -6,12 +6,12 @@ const knex = require("knex");
 const bcrypt = require('bcrypt')
 const fs = require("fs");
 const signIn = require('./controllers/signin')
+let listBenef = require("./listBenef.json");
 const { sign } = require("crypto");
 const xlsxController = require('./controllers/xlsx');
 const daily = require('./controllers/daily')
 const status = require('./controllers/status')
 const env = require('./env')
-const list = require('./controllers/list')
 
 
 //db is a table with name, date, temp(auto-generated), cosemnat
@@ -55,11 +55,7 @@ app.post("/daily", (req, res) => {
 
 app.post('/signin',(req,res) => {signIn.handleSignIn(req,res,db,bcrypt)})
 
-app.get('/status',(req,res) => {status.handleStatus(req,res,db)})
-
-app.post('/list/add',(res,req) => {list.handleAdd(req, res, db)})
-
-app.get('/list/get', (res, req) => {list.handleGet(req, res, db)}) 
+app.get('/status',(req,res) => {status.handleStatus(req,res,db, listBenef)})
 
 app.listen(process.env.PORT || 3001, () => {
   console.log("Server is running!");

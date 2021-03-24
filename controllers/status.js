@@ -1,83 +1,32 @@
-const download = require("./download.js");
+const handleStatus = (req, res, db, listBenef) => {
+  db.select("*")
+    .from("status")
+    .then((data) => {
+      let tempList = [];
+      console.table(data);
 
-const handleStatus = (req, res, db) => {
-  //getNames.handleGdrive((stream) => {
-    // if (err) return console.log("The API returned an error: " + err);
-    // const files = resp.data.files;
-    // let fileNames
-    // if (files.length) {
-      
-    //   fileNames = files.map((file) => {
-        
-    //     return file.name.split(" ")[0] + " " + file.name.split(" ")[1];
-    //   });
-      
-    // } else {
-    //   console.log("No files found.");
-    // }
-    //console.log(stream);
-
-    download.downloadFile('0BwwA4oUTeiV1UVNwOHItT0xfa2M')
-    .catch(console.log)
-
-    db.select("*")
-      .from("status")
-      .then((data) => {
-        db("list")
-          .select("*")
-          .then((resp) => {
-            let list = [];
-            console.log('db db');
-            resp.forEach((benef) => {
-              //console.log(fileNames);
-              //console.log('we found '+benef.name+': '+ fileNames.find((value)=>value === benef.name))
-              const tempList = data.filter(
-                (element) => element.name === benef.name
-              );
-              
-              if (tempList.length > 1) {
-                list.push({
-                  name: benef.name,
-                  suspended: benef.suspended,
-                  planpers: reducer(tempList, "planpers"),
-                  fisamonit: reducer(tempList, "fisamonit"),
-                  registrusapt: reducer(tempList, "registrusapt"),
-                  fisaeval: reducer(tempList, "fisaeval"),
-                });
-              } else if (tempList.length) {
-                list.push({
-                  name: benef.name,
-                  suspended: benef.suspended,
-                  planpers: tempList[0].planpers,
-                  fisamonit: tempList[0].fisamonit,
-                  registrusapt: tempList[0].registrusapt,
-                  fisaeval: tempList[0].fisaeval,
-                });
-              } else {
-                list.push({
-                  name: benef.name,
-                  suspended: benef.suspended,
-                  planpers: "N/A",
-                  fisamonit: "N/A",
-                  registrusapt: "N/A",
-                  fisaeval: "N/A",
-                });
+      data.forEach((obj) => {
+        if (tempList.length) {
+          tempList.map((value, i) => {
+            console.log(value);
+            if (obj.name === value.name) {
+              if (obj.planpers.getTime() > value.planpers.getTime()) {
+                value.planpers = obj.planpers;
               }
-            });
-
-            res.json(list);
-          })
-          .catch(console.log);
+              if (obj.fisamonit.getTime() > value.fisamonit.getTime()) {
+                value.fisamonit = obj.fisamonit;
+              }
+            } else {
+              tempList.push(obj);
+            }
+          });
+        } else {
+          tempList.push(obj);
+        }
       });
-  //});
+      res.json(tempList);
+    });
 };
-
-const reducer = (tempList, statusType) => {
-  return tempList.reduce((acc, cv) =>
-    acc[statusType] < cv[statusType] ? cv[statusType] : acc[statusType]
-  );
-};
-
 module.exports = {
   handleStatus: handleStatus,
 };

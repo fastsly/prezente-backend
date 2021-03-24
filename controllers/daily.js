@@ -13,12 +13,11 @@ function handleDatabaseInsert(benef, res, isArray,db) {
         console.log(tempDate+' and date '+date)
         //generate temp
         const min = 35.6;
-        const max = 36.0;
+        const max = 35.8;
         const rand = Math.random() * (max - min + 1) + min;
         user.temp = rand.toFixed(1);
         user.date = date || tempDate;
         userArray.push(user)
-        console.table(userArray)
       });
       db("prezente")
           .returning("*")
