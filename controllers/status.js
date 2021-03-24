@@ -1,24 +1,26 @@
 const download = require("./download.js");
+const drive = require("./drive")
 
 const handleStatus = (req, res, db) => {
-  //getNames.handleGdrive((stream) => {
-    // if (err) return console.log("The API returned an error: " + err);
-    // const files = resp.data.files;
-    // let fileNames
-    // if (files.length) {
+  let stream = drive.handleGdrive("else",(err,resp) => {
+    if (err) return console.log("The API returned an error: " + err);
+    const files = resp.data.files;
+    let fileNames
+    if (files.length) {
       
-    //   fileNames = files.map((file) => {
+      fileNames = files.map((file) => {
         
-    //     return file.name.split(" ")[0] + " " + file.name.split(" ")[1];
-    //   });
+        return file.name.split(" ")[0] + " " + file.name.split(" ")[1];
+      });
       
-    // } else {
-    //   console.log("No files found.");
-    // }
-    //console.log(stream);
-
-    download.downloadFile('0BwwA4oUTeiV1UVNwOHItT0xfa2M')
-    .catch(console.log)
+    } else {
+      console.log("No files found.");
+    }
+    console.log(files);
+  })
+    // drive.handleGdrive('list', () =>{})
+    // download.downloadFile('0BwwA4oUTeiV1UVNwOHItT0xfa2M')
+    // .catch(console.log)
 
     db.select("*")
       .from("status")

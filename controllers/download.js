@@ -1,6 +1,6 @@
 
 'use strict';
-
+const readline = require('readline');
 const {google} = require('googleapis');
 const fs = require('fs');
 const os = require('os');
@@ -8,7 +8,7 @@ const uuid = require('uuid');
 const path = require('path');
 //const {authenticate} = require('@google-cloud/local-auth');
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
+const SCOPES = ['https://www.googleapis.com/auth/drive.metadata','https://www.googleapis.com/auth/drive.file'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -96,7 +96,7 @@ function authorize(credentials) {
 
 // Check if we have previously stored a token.
 fs.readFile(TOKEN_PATH, (err, token) => {
-  if (err) return getAccessToken(oAuth2Client, callback);
+  if (err) return getAccessToken(oAuth2Client);
   oAuth2Client.setCredentials(JSON.parse(token));
   return oAuth2Client;
 });
@@ -109,7 +109,7 @@ fs.readFile(TOKEN_PATH, (err, token) => {
  * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
  * @param {getEventsCallback} callback The callback for the authorized client.
  */
-function getAccessToken(oAuth2Client, callback) {
+function getAccessToken(oAuth2Client) {
   const authUrl = oAuth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,
@@ -129,7 +129,7 @@ function getAccessToken(oAuth2Client, callback) {
         if (err) return console.error(err);
         console.log('Token stored to', TOKEN_PATH);
       });
-      callback(oAuth2Client);
+      
     });
   });
 }
