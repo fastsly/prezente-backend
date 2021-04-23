@@ -121,6 +121,27 @@ Content-Type:  application/json
 }
 
 ###
+POST http://localhost:3001/updateStatus HTTP/1.1
+Content-Type:  application/json
+
+{"status":{
+    "name":"test",
+    "planpers":"2020.01.12"
+}
+}
+
+###
+
+PUT http://localhost:3001/suspend HTTP/1.1
+Content-Type:  application/json
+
+{
+    "suspend":{
+        "name":"Abrudan Ioana"
+    }
+}
+
+###
 POST http://localhost:3001/list/add HTTP/1.1
 Content-Type: application/json
 
@@ -332,4 +353,12 @@ Content-Type: application/json
     }
     
 ]
+}
+
+###
+POST https://oslogin.googleapis.com/v1/users/szalai.laszlo.istvan.psiho@gmail.com:importSshPublicKey
+
+{
+ "key": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA5IrV/icLi7G4TQYaA0WevccQR12PoGMTfNkFBG79ASBJNWBSQo/URmTC/GEIDgx3eAwsJXreLFQE9xm7zHg1C9WaT2or/Qv2Vgz0gZ37N0c3Vo97hNuEU0i24ViELVXzaajJvqm3UkFLVmXvx1Lp8tHBkH0B0zt3q3JF00SO+n/Ed9KhPdECeUDq05ZHAfylQ2esFyZVQbVSponF1lb9pSLDv2p9GFNPXzR+fZVKl/IeG3qurP8FV0q4RzbovsARAiskmym++O088ktt6/efCIpf7xzt/tH8iwkkG3yyQjIB/etnBuCg7da3F9QYGYHYbVk4SPBgdJZ96JEn+5YYTQ== szalai_laszlo_istvan_psiho",
+ 
 }

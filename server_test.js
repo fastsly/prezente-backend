@@ -57,6 +57,10 @@ app.post('/signin',(req,res) => {signIn.handleSignIn(req,res,db,bcrypt)})
 
 app.get('/status',(req,res) => {status.handleStatus(req,res,db)})
 
+app.post('/updateStatus', (req,res) => {console.log('Status update request recieved');status.addStatus(req,res,db)})
+
+app.put('/suspend', (req,res)=>{status.handleSuspend(req,res,db)})
+
 app.post('/list/add',(res,req) => {list.handleAdd(req, res, db)})
 
 app.get('/list/get', (res, req) => {list.handleGet(req, res, db)}) 
