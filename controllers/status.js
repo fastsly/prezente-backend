@@ -118,7 +118,22 @@ const handleSuspend = (req,res,db)=>{
 }
 }
 
+const addStatus = (req,res,db)=>{
+  if(req.body.addStatus){
+    db('status')
+    .returning('*')
+    .insert(req.body.addStatus)
+    .then((benef) =>{
+        res.status(200).json(benef)
+    })
+    .catch((err) => {
+        res.status(400).json('There was a problem inserting into database: '+err)
+    })
+}
+}
+
 module.exports = {
   handleStatus: handleStatus,
-  handleSuspend: handleSuspend
+  handleSuspend: handleSuspend,
+  addStatus: addStatus
 };
