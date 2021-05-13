@@ -119,6 +119,7 @@ const handleSuspend = (req,res,db)=>{
 }
 
 const addStatus = (req,res,db)=>{
+  console.log(`Were adding status`);
   if(req.body.addStatus){
     db('status')
     .returning('*')
