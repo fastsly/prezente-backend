@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
   res.status(200).json("Server is running, everything is a ok");
 });
 
-app.get("/xlsx/:year/:month", (req, res) => { xlsxController.handleXlsx(req,res,db,XLSX, listBenef)
+app.get("/xlsx/:year/:month", (req, res) => { xlsxController.handleXlsx(req,res,db,XLSX)
   
 });
 
